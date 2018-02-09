@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.lang.String;
+
 /*
  * CAN MAKE SMALLER! LOTS OF REPETITION
  */
@@ -8,13 +11,15 @@ public class HardConstraintsFin{
 	int ignoreVal = -1;
 	
 	//public void doHard(int[][] array, ArrayList<String> forced, ArrayList<String> forbidden, ArrayList<String> tooNear)
-	public void doHard(int[][] array, int[] forced, int[] forbidden, char[] tooNear){
+	public int[][] doHard(int[][] array, int[] forced, int[] forbidden, ArrayList<String> tooNearTasks) {
+	//public void doHard(){
 		//int size = forced.size();
+		
 		int size = forced.length; //change to global size since all list same size
 		
-		if (forced.length>globeSize) {System.out.println("Error: Forced Pairtial Assignment lengs out of bounds!");}
-		if (forbidden.length>globeSize) {System.out.println("Error: Forbidden Machine lengs out of bounds!");}
-		if (tooNear.length>globeSize) {System.out.println("Error: Too-Near Tasks lengs out of bounds!");}
+		//if (forced.length>globeSize) {System.out.println("Error: Forced Pairtial Assignment lengs out of bounds!");}
+		//if (forbidden.length>globeSize) {System.out.println("Error: Forbidden Machine lengs out of bounds!");}
+		//if (tooNearTasks.size()>globeSize) {System.out.println("Error: Too-Near Tasks lengs out of bounds!");}
 		
 		for (int counter = 0; counter < forced.length; counter++) {
 			forcedPartial(array, forced, forced[counter], counter, size);	
@@ -24,10 +29,11 @@ public class HardConstraintsFin{
 			forbidden(array, forbidden, forbidden[counter], counter, size);
 		}
 		
-		for (int counter = 0; counter < tooNear.length; counter++) {	
-			tooNearProcess(array, tooNear, tooNear[counter], size);
+		//for (int counter = 0; counter < tooNearTasks.length; counter++) {	
+		//	tooNearProcess(array, tooNearTasks, tooNearTasks[counter][], size);
 			
-		}
+		//}
+		return array;
 	}
 	
 	private void tooNearProcess(int[][] array, char[] tooNearList, char forbiddenPair, int size) {
@@ -166,3 +172,4 @@ public class HardConstraintsFin{
 	}
 
 }
+
