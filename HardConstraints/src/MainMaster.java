@@ -1,25 +1,113 @@
 import java.util.ArrayList;
 import java.lang.String;
 
-/*
- * CAN MAKE SMALLER! LOTS OF REPETITION
+/**
+ * 
+ * @author nickolejimenez
+ * Hard Constraints class deals with Forced Partial Assignment, Forbidden Machine and Too-Near 
+ * Tasks. 
+ * Main Tester
+ * Updates "global" main matrix of Hard Constraints for subsequent classes to use. 
  */
 
-public class HardConstraints{
-	
-	public int[][] doHard(int[][] mainArray, int[] forced, int[] forbidden, ArrayList<String> tooNear) {
-		for (int counter = 0; counter < forced.length; counter++) {
-			forcedPartial(mainArray, forced, forced[counter], counter);	
-		}
+//import java.io.*;
+import java.util.ArrayList; 
+
+public class MainMaster {
+	static int ignoreVal = -1;
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int[][] mainArray = 	    {
+		        {1, 0, 1, 1, 1, 1, 1, 1},
+		        {1, 1, 1, 1, 1234, 1, 1, 1},
+		        {1, 1, 1, 1, 1, 1, 1, 1},
+		        {1, 1, 1, 1, 1, 1, 1, 1},
+		        {1, 1, 1, 1, 1, 1, 1, 1},
+		        {1, 1, 1, 1, 1, 1, 1, 1},
+		        {1, 1, 1, 1, 1, 1, 1, 1},
+		        {1, 1, 1, 1, 1, 1, 1, 12}
+		    };
+		int[] forced = {0, -1, 2, -1, -1, -1, -1, -1};
+		int[] forbidden = {-1, -1, -1, -1, -1, -1, -1, 5};
+		ArrayList<String> tooNear = new ArrayList();
 		
-		for (int counter = 0; counter < forbidden.length; counter++) {
-			forbidden(mainArray, forbidden, forbidden[counter], counter);
+		tooNear.add("CD");
+		tooNear.add("AB");
+	
+		for(int counter = 0; counter<mainArray.length; counter++) {
+			for(int counter1 = 0; counter1<mainArray[counter].length; counter1++) {
+				System.out.println(mainArray[counter][counter1]);
 			}
-		tooNearRead(mainArray, tooNear, forced);
+			System.out.println("\n");
+		}
+		System.out.println("_________________");
+		
+		mainArray = doHard(mainArray, forced, forbidden, tooNear);
+	
+	}	
+	
+	// doHard function takes the "global" matrix, list of forced pairings, forbidden pairings and too near Hard
+	// constraints. doHard updates the "global" matrix of the Hard Constraints to be passed to soft constraints.
+	public static int[][] doHard(int[][] mainArray, int[] forced, int[] forbidden, ArrayList<String> tooNear) {
+		
+		//if (forced.length>0) {
+			for (int counter = 0; counter < forced.length; counter++) {
+				forcedPartial(mainArray, forced, forced[counter], counter);	
+			}
+			for(int counter = 0; counter<mainArray.length; counter++) {
+				for(int counter1 = 0; counter1<mainArray[counter].length; counter1++) {
+					System.out.println(mainArray[counter][counter1]);
+				}
+				System.out.println("\n");
+			}
+			System.out.println("________after forced_________");
+			
+		for (int counter = 0; counter < forbidden.length; counter++) {
+			forbidden(mainArray, forbidden, forbidden[counter], counter, forced);
+			}
+			
+		for(int counter = 0; counter<mainArray.length; counter++) {
+			for(int counter1 = 0; counter1<mainArray[counter].length; counter1++) {
+				System.out.println(mainArray[counter][counter1]);
+			}
+			System.out.println("\n");
+		}
+		System.out.println("________after forbidden_________");
+			
+		if (tooNear.size()>0) {
+			tooNearRead(mainArray, tooNear, forced);
+		}
+			
+		for(int counter = 0; counter<mainArray.length; counter++) {
+			for(int counter1 = 0; counter1<mainArray[counter].length; counter1++) {
+				System.out.println(mainArray[counter][counter1]);
+			}
+			System.out.println("\n");
+		}
+		System.out.println("________after forced_________");		
+		
+		
+		for(int counter = 0; counter<mainArray.length; counter++) {
+			for(int counter1 = 0; counter1<mainArray[counter].length; counter1++) {
+				System.out.println(mainArray[counter][counter1]);
+			}
+			System.out.println("\n");
+		}
+		System.out.println("________after forbidden_________");	
+		
+		for(int counter = 0; counter<mainArray.length; counter++) {
+			for(int counter1 = 0; counter1<mainArray[counter].length; counter1++) {
+				System.out.println(mainArray[counter][counter1]);
+			}
+			System.out.println("\n");
+		}
+		System.out.println("________after too Near_________");	
 		
 		return mainArray;
 	}
 
+	//takes the too near tasks array list and converts it to integers for easier processing.
 	private static void tooNearRead(int[][] mainArray, ArrayList<String> tooNearArray, int[] forcedList) {
 		// TODO Auto-generated method stub
 		String tooNearStringPair;
@@ -29,6 +117,7 @@ public class HardConstraints{
 		}
 	}
 	
+	//too Near Comparison. Assigns numeric value to first task in too near tasks.
 	private static void tooNearComp(int[][] mainArray, String tooNearStringPair, ArrayList<String> tooNearArray, int[] forcedList) {
 		// TODO Auto-generated method stub
 		String tooNearString = tooNearStringPair;
@@ -61,6 +150,7 @@ public class HardConstraints{
 		}
 	}
 	
+	//too Near Comparison. assigns numeric to 2nd task in too near tasks
 	private static void tooNearComp2(int[][] mainArray, int firstTask, char secondTask, ArrayList<String> tooNearArray, int[] forcedList) {
 		// TODO Auto-generated method stub
 		switch(secondTask) {
@@ -91,6 +181,8 @@ public class HardConstraints{
 		}
 		
 	}
+	
+	//sets too near tasks in "global" mainMatrix
 	private static void setTooNear(int[][] mainArray, int firstTask, int secondTask, ArrayList<String> tooNearArray, int[] forcedList) {
 		// TODO Auto-generated method stub
 	    for (int count = 0 ; count < 8; count++) {
@@ -108,19 +200,23 @@ public class HardConstraints{
 	    		}
 	    }
 	}
-		
+	
+	//used by too near tasks hard constraints	 to determine if task mentioned is hard assigned.
+	//makes appropriate assignments
 	private static boolean isForced(int machine, int task, int[] forcedList) {
 		// TODO Auto-generated method stub
+		//if (forcedList.length == 0) {setForcedNoChange()};
 		if (forcedList[machine]==task) {return true;}
 		else {return false;}
 	}
 
-	private static void forbidden(int[][] mainArray, int[] forbidden, int forbiddenTask, int machine) {
+	//deals with forbidden task list.
+	private static void forbidden(int[][] mainArray, int[] forbidden, int forbiddenTask, int machine, int[] forcedList) {
 		// TODO Auto-generated method stub
 		if (checkTaskBounds(forbiddenTask) == false) {
 			//do nothing. go back to for loop
-			System.out.println("ERROR: Task out of bounds");
-			System.exit(0);
+			//System.out.println("ERROR: Task out of bounds");
+			//System.exit(0);
 			
 		}
 		if (forbiddenTask == -1) {
@@ -131,52 +227,58 @@ public class HardConstraints{
 		
 			switch (machine) {
 			case 0:
-				setForbidden(mainArray, 0, forbiddenTask);
+				setForbidden(mainArray, 0, forbiddenTask, forcedList);
 				break;
 			case 1:
-				setForbidden(mainArray, 1, forbiddenTask);
+				setForbidden(mainArray, 1, forbiddenTask, forcedList);
 				break;
 			case 2:
-				setForbidden(mainArray, 2, forbiddenTask);
+				setForbidden(mainArray, 2, forbiddenTask, forcedList);
 				break;
 			case 3:
-				setForbidden(mainArray, 3, forbiddenTask);
+				setForbidden(mainArray, 3, forbiddenTask, forcedList);
 				break;
 			case 4:
-				setForbidden(mainArray, 4, forbiddenTask);
+				setForbidden(mainArray, 4, forbiddenTask, forcedList);
 				break;
 			case 5:
-				setForbidden(mainArray, 5, forbiddenTask);
+				setForbidden(mainArray, 5, forbiddenTask, forcedList);
 				break;
 			case 6:
-				setForbidden(mainArray, 6, forbiddenTask);
+				setForbidden(mainArray, 6, forbiddenTask, forcedList);
 				break;
 			case 7:
-				setForbidden(mainArray, 7, forbiddenTask);
+				setForbidden(mainArray, 7, forbiddenTask, forcedList);
 				break;
 			}	
 		}
 	}
-			
-	private static void setForbidden(int[][] mainArray, int machine, int forbiddenTask) {
+	
+	//sets the forbidden pairs.
+	private static void setForbidden(int[][] mainArray, int machine, int forbiddenTask, int[] forcedList) {
 		// TODO Auto-generated method stub
 		int ignoreVal = -1;
 		for (int counter = 0; counter < mainArray.length; counter++) {
 			if (counter == forbiddenTask) {
-				if (mainArray[machine][counter] != ignoreVal) {
-					//System.out.println("ERROR: FORCED and FORBIDDEN HARD CONSTRAINTS CONFLICT");
-					//System.exit(0);
+				if (isForced(machine, forbiddenTask, forcedList)) {
+					System.out.println("ERROR: FORCED and FORBIDDEN HARD CONSTRAINTS CONFLICT");
+					System.exit(0);
 				}else {
 					mainArray[machine][counter] = ignoreVal;
 				}
+				//if (mainArray[machine][counter] != ignoreVal) {
+				//	System.out.println("ERROR: FORCED and FORBIDDEN HARD CONSTRAINTS CONFLICT");
+				//	System.exit(0);
+				//}else {
+				//	mainArray[machine][counter] = ignoreVal;
+				//}
 			}else {
 				mainArray[machine][counter]=mainArray[machine][counter];
 			}
 		}
 	}
 
-		
-
+		//deals with forced partial pairs
 		private static void forcedPartial(int[][] mainArray, int[] forcedList, int task, int machine) {
 			// TODO Auto-generated method stub
 			if (checkTaskBounds(task) == false) {
@@ -218,6 +320,7 @@ public class HardConstraints{
 			}
 		}
 		
+		//called when element in 2Dmatrix is to be skipped to keep penalties
 		private static void setNoChange(int[][] mainArray, int machine) {
 			// TODO Auto-generated method stub
 			for(int counter = 0; counter < mainArray.length; counter++) {
@@ -226,6 +329,7 @@ public class HardConstraints{
 			
 		}
 
+		//sets forced pairs in "global" matrix
 		private static void setForced(int[][] mainArray, int machine, int task) {
 			int ignoreVal = -1;
 			
@@ -240,22 +344,24 @@ public class HardConstraints{
 			}
 		}
 
+		//checks if tasks being assigned are within bounds (0-7)
 		private static boolean checkTaskBounds(int task) {
 			// TODO Auto-generated method stub
 			boolean isInBound;
 			
 			if ((task < 0) || (task > 7)) {
 				isInBound = false;
-				//System.out.print("Error: Invalid Machine/Task");
-				//System.exit(0);
-			}if (task == -1){
-				isInBound = true;
-			}else {
+				if (task == -1) {
+					isInBound = true;
+				}else {
+					System.out.print("Error: Invalid Machine/Task");
+					System.exit(0);
+				}	
+			}
+			else {
 				isInBound = true;
 			}
 			return isInBound;
 		}
 
 	}
-	
-	
