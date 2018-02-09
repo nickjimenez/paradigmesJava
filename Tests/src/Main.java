@@ -17,7 +17,7 @@ public class Main {
 		        {7, 6, 9, 4, 9, 2, 7, 8}
 		    };
 		int[] forced = {-1, -1, 5, -1, -1, -1, -1, 7};
-		int[] forbidden = {-1, -1, -1, -1, -1, -1, -1, -1};
+		int[] forbidden = {-1, -1, 5, -1, -1, -1, -1, -1};
 		ArrayList<String> tooNear = new ArrayList();
 		
 		tooNear.add("HA");
@@ -219,8 +219,8 @@ private static void forbidden(int[][] mainArray, int[] forbidden, int forbiddenT
 			if (counter == forbiddenTask) {
 				//mainArray[machine][counter]=mainArray[machine][counter];
 				if (mainArray[machine][counter] != ignoreVal) {
-					//System.out.println("ERROR: FORCED and FORBIDDEN HARD CONSTRAINTS CONFLICT");
-					//System.exit(0);
+					System.out.println("ERROR: FORCED and FORBIDDEN HARD CONSTRAINTS CONFLICT");
+					System.exit(0);
 				}else {
 					mainArray[machine][counter] = ignoreVal;
 				}
@@ -303,11 +303,15 @@ private static void forbidden(int[][] mainArray, int[] forbidden, int forbiddenT
 		
 		if ((task < 0) || (task > 7)) {
 			isInBound = false;
-			//System.out.print("Error: Invalid Machine/Task");
-			//System.exit(0);
-		}if (task == -1){
-			isInBound = true;
-		}else {
+			if (task == -1) {
+				isInBound = true;
+			}else {
+				System.out.print("Error: Invalid Machine/Task");
+				System.exit(0);
+			}	
+		}//if (task == -1){
+		//	isInBound = true;}
+		else {
 			isInBound = true;
 		}
 		return isInBound;
